@@ -3,3 +3,4 @@ resource_management
 thread_synchronization
 makefile
 input.txt
+.DS_Store
