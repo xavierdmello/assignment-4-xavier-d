@@ -11,16 +11,19 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int decrease_count(int thread_number, int count) {
     pthread_mutex_lock(&mutex);
+    int success = 0;
     if (available_resources < count) {
-        pthread_mutex_unlock(&mutex);
-        return -1;
+        success = -1;
     } else {
         available_resources -= count;
-        printf("The thread %d has acquired, %d resources and %d more resources are available.\n", 
-               thread_number, count, available_resources);
-        pthread_mutex_unlock(&mutex);
-        return 0;
     }
+    pthread_mutex_unlock(&mutex);
+
+    if (success == 0) {
+        printf("The thread %d has acquired %d resources; %d more resources are available.\n", 
+               thread_number, count, available_resources);
+    }
+    return success;
 }
 
 int increase_count(int thread_number, int count) {
